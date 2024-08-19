@@ -92,3 +92,20 @@ inner join products as p
     on s.product_id = p.product_id
 group by selling_month
 order by selling_month;
+
+/*запрос, который оторбражает покупателей, первая покупка которых 
+ была в ходе проведения акций*/
+select
+    concat(c.first_name, ' ', c.last_name) as customer,
+    min(s.sale_date) as sale_date,
+    concat(e.first_name, ' ', e.last_name) as seller
+from sales as s
+inner join customers as c
+    on s.customer_id = c.customer_id
+inner join employees as e
+    on s.sales_person_id = e.employee_id
+inner join products as p
+    on s.product_id = p.product_id
+where p.price = 0
+group by c.customer_id, seller
+order by customer;
