@@ -48,7 +48,7 @@ with tab as (
         p.price,
         s.quantity,
         concat(e.first_name, ' ', e.last_name) as seller,
-        to_char(s.sale_date, 'Day') as day_of_week,
+        to_char(s.sale_date, 'day') as day_of_week,
         to_char(s.sale_date, 'ID') as day_of_week_id
     from sales as s
     inner join employees as e
