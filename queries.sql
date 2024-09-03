@@ -94,15 +94,30 @@ order by selling_month;
  была в ходе проведения акций*/
 select
     concat(c.first_name, ' ', c.last_name) as customer,
-    min(s.sale_date) as sale_date,
+    s.sale_date,
     concat(e.first_name, ' ', e.last_name) as seller
-from sales as s
+from (
+    select
+        customer_id,
+        min(sale_date) as first_sale_date
+    from sales
+    where
+        product_id in (
+            select product_id
+            from products
+            where price = 0
+        )
+    group by customer_id
+) as first_sales
+inner join sales as s
+    on
+        first_sales.customer_id = s.customer_id
+        and first_sales.first_sale_date = s.sale_date
 inner join customers as c
     on s.customer_id = c.customer_id
 inner join employees as e
     on s.sales_person_id = e.employee_id
-inner join products as p
-    on s.product_id = p.product_id
-where p.price = 0
-group by c.customer_id, seller
-order by customer;
+group by
+    c.customer_id, c.first_name, c.last_name, s.sale_date,
+    e.first_name, e.last_name
+order by c.customer_id;
