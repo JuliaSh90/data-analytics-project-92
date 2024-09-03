@@ -98,7 +98,7 @@ select
     concat(c.first_name, ' ', c.last_name) as customer,
     concat(e.first_name, ' ', e.last_name) as seller
 from (
-    select 
+    select
         customer_id,
         min(sale_date) as first_sale_date
     from sales
