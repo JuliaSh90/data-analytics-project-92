@@ -16,7 +16,7 @@ group by emp.first_name, emp.last_name
 order by income desc
 limit 10;
 
-/*запрос по поиску продавцах, чья средняя выручка за сделку меньше 
+/*запрос по поиску продавцах, чья средняя выручка за сделку меньше
  * средней выручки за сделку по всем продавцам*/
 select
     concat(e.first_name, ' ', e.last_name) as seller,
@@ -66,8 +66,9 @@ from tab
 group by seller, day_of_week, day_of_week_id
 order by day_of_week_id, seller;
 
-/*запрос, который подсчитывает количество покупателей в разных возрастных группах*/
- select
+/*запрос, который подсчитывает количество покупателей
+в разных возрастных группах*/
+select
     case
         when age between 16 and 25 then '16-25'
         when age between 26 and 40 then '26-40'
@@ -78,7 +79,7 @@ from customers
 group by age_category
 order by age_category;
 
-/*запрос, который подсчитывает количество уникальных покупателей 
+/*запрос, который подсчитывает количество уникальных покупателей
  и выручку, которую они принесли*/
 select
     to_char(s.sale_date, 'YYYY-MM') as selling_month,
@@ -90,14 +91,14 @@ inner join products as p
 group by selling_month
 order by selling_month;
 
-/*запрос, который оторбражает покупателей, первая покупка которых 
+/*запрос, который оторбражает покупателей, первая покупка которых
  была в ходе проведения акций*/
 select
-    concat(c.first_name, ' ', c.last_name) as customer,
     s.sale_date,
+    concat(c.first_name, ' ', c.last_name) as customer,
     concat(e.first_name, ' ', e.last_name) as seller
 from (
-    select
+    select 
         customer_id,
         min(sale_date) as first_sale_date
     from sales
